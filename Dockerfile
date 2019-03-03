@@ -24,6 +24,7 @@ RUN apt-get upgrade -y && \
         libgdal-dev \
         locales \
         net-tools \
+        osmctools \
         osmium-tool \
         p7zip-full \
         perl \
