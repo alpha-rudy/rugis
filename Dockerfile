@@ -1,11 +1,10 @@
-FROM ubuntu:18.04
+FROM ubuntu:disco
 MAINTAINER Rudy Chung <rudy.chung@liteon.com>
 
 RUN sed -i 's/archive.ubuntu.com/free.nchc.org.tw/g' /etc/apt/sources.list
 RUN apt-get update
 
 RUN apt-get install -y --no-install-recommends software-properties-common
-RUN add-apt-repository ppa:nextgis/ppa && apt-get update
 
 ENV TZ=Asia/Taipei
 RUN echo $TZ > /etc/timezone && apt-get install -y --no-install-recommends tzdata
@@ -30,10 +29,7 @@ RUN apt-get upgrade -y && \
         perl \
         python-gdal \
         python3 \
-        python3-bs4 \
         python3-dev \
-        python3-matplotlib \
-        python3-numpy \
         python3-pip \
         python3-pkg-resources \
         python3-setuptools \
@@ -42,15 +38,17 @@ RUN apt-get upgrade -y && \
         vim \
         wget \
     && rm -rf /var/lib/apt/lists/*
-RUN pip3 install wheel
-RUN pip3 install GDAL
+RUN pip3 install --upgrade pip
+RUN pip3 install --upgrade bs4 matplotlib numpy setuptools
+RUN pip3 install wheel pygdal
 RUN locale-gen en_US.UTF-8
 RUN adduser --disabled-password --gecos '' builder && adduser builder sudo
 ADD ./rootfs /
 RUN chown -R builder:builder /home/builder
-RUN cd /home/builder/works/phyghtmap-2.20/ && python3 setup.py install
+RUN cd /home/builder/packages/phyghtmap-2.20/ && python3 setup.py install
 
 USER builder
+RUN mkdir /home/builder/workspace
 WORKDIR /home/builder
 
 CMD ["/bin/bash"]
