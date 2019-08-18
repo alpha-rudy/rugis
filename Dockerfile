@@ -40,7 +40,9 @@ RUN apt-get upgrade -y && \
     && rm -rf /var/lib/apt/lists/*
 RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade bs4 matplotlib numpy setuptools
-RUN pip3 install wheel pygdal
+RUN pip3 install wheel
+RUN pip3 install pygdal=="`gdal-config --version`.*"
+RUN pip3 install osmium
 RUN locale-gen en_US.UTF-8
 RUN adduser --disabled-password --gecos '' builder && adduser builder sudo
 ADD ./rootfs /
