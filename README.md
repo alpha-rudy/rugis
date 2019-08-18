@@ -21,6 +21,3 @@ Upstream Links:
 * And then next time, simply start it
 
       docker start -i rugis
-
-
-Note: The nextgis ppa is used inside the docker.
